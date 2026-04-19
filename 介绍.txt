@@ -1,0 +1,32 @@
+项目：多Agent协作的自动化科研助手
+ 一句话描述
+  输入一个研究问题，多个Agent分工协作，自动完成「文献检索 → 内容总结 → 对比分析 → 生成报告」全流程。
+   Agent分工设计
+    Agent职责
+    Planner拆解任务，分配给其他
+    AgentSearcher调用arXiv/语义搜索API检索论文
+    Reader精读每篇论文，提取核心贡献
+    Analyst横向对比多篇论文，找异同Writer汇总所有结果，生成结构化报告
+    技术栈（1~2周可完成）
+    框架：LangGraph（节点即Agent，边即流程，适合可视化展示）
+    模型：GPT-4o 或 Claude API
+    工具：arXiv API、PDF解析（pypdf）
+    展示：Gradio 做一个简单的Web界面，输入问题→输出报告
+    Demo效果 用户输入：「帮我调研 LLM reasoning 最新进展」
+    ↓ Planner 拆解为3个子任务
+    ↓ Searcher 检索到10篇相关论文
+    ↓ Reader 并行总结每篇论文
+    ↓ Analyst 对比各方法的优劣
+    ↓ Writer 输出一份结构化综述报告
+    📄 1~2周执行计划
+    第1周
+    Day 1~2：搭框架，跑通单个Agent的工具调用
+    Day 3~4：实现多Agent之间的消息传递和状态共享
+    Day 5~7：调试完整流程，保证端到端能跑通
+    第2周
+    Day 1~2：做Gradio界面，让demo可以展示
+    Day 3~4：优化prompt，提升报告质量
+    Day 5~7：跑几个case，截图/录屏，整理成项目文档
+    面试亮点
+    有完整的系统设计（多Agent分工，有架构图可画）
+    有可展示的demo，不只是跑代码 可以量化：对比单Agent vs 多Agent的报告质量

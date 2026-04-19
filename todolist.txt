@@ -1,0 +1,168 @@
+# 多Agent协作自动化科研助手 - 开发任务清单
+
+## 项目概述
+输入一个研究问题，多个Agent分工协作，自动完成「文献检索 → 内容总结 → 对比分析 → 生成报告」全流程。
+
+---
+
+## Agent分工设计
+
+| Agent | 职责 |
+|-------|------|
+| Planner | 拆解任务，分配给其他Agent |
+| Searcher | 调用arXiv/语义搜索API检索论文 |
+| Reader | 精读每篇论文，提取核心贡献 |
+| Analyst | 横向对比多篇论文，找异同 |
+| Writer | 汇总所有结果，生成结构化报告 |
+
+---
+
+## 技术栈
+- 框架：LangGraph（节点即Agent，边即流程）
+- 模型：GPT-4o 或 Claude API
+- 工具：arXiv API、PDF解析（pypdf）
+- 展示：Gradio Web界面
+
+---
+
+## 开发任务清单
+
+### 第1周 - 核心功能开发
+
+- [ ] 任务1：项目初始化与环境配置
+  - 创建项目结构
+  - 配置Python虚拟环境
+  - 安装依赖（LangGraph、OpenAI/Claude SDK、Gradio、pypdf等）
+
+- [ ] 任务2：搭建基础框架结构
+  - 设计项目目录结构
+  - 定义Agent基类
+  - 配置管理模块
+
+- [ ] 任务3：实现 Planner Agent - 任务拆解与分配
+  - 开发任务拆解Agent
+  - 负责将研究问题分解为子任务
+  - 分配任务给其他Agent
+
+- [ ] 任务4：实现 Searcher Agent - arXiv/语义搜索API集成
+  - 集成arXiv API
+  - 实现语义搜索功能
+  - 论文检索功能
+
+- [ ] 任务5：实现 Reader Agent - 论文精读与核心提取
+  - 开发论文精读功能
+  - 提取核心贡献、方法、实验结果
+
+- [ ] 任务6：实现 Analyst Agent - 多论文对比分析
+  - 开发横向对比功能
+  - 分析多篇论文的异同、优劣
+
+- [ ] 任务7：实现 Writer Agent - 结构化报告生成
+  - 开发报告生成器
+  - 汇总所有结果输出结构化综述
+
+- [ ] 任务8：集成LangGraph工作流 - 多Agent协作流程
+  - 使用LangGraph构建多Agent协作流程
+  - 节点=Agent，边=流程
+
+- [ ] 任务9：实现状态管理与消息传递机制
+  - 设计状态共享机制
+  - 确保Agent间数据传递顺畅
+
+### 第2周 - 界面优化与完善
+
+- [ ] 任务10：开发Gradio Web界面
+  - 构建简洁的Web UI
+  - 输入研究问题 → 展示处理进度 → 输出报告
+
+- [ ] 任务11：优化Prompt模板提升报告质量
+  - 迭代优化各Agent的Prompt
+  - 提升报告质量和准确性
+
+- [ ] 任务12：端到端流程测试与调试
+  - 完整流程测试
+  - 确保从输入问题到输出报告的端到端可用性
+
+- [ ] 任务13：运行测试用例并收集结果
+  - 使用多个研究主题进行测试
+  - 如：LLM reasoning、RAG等
+
+- [ ] 任务14：单Agent vs 多Agent效果对比评估
+  - 量化评估多Agent协作效果
+  - 对比单Agent vs 多Agent的报告质量
+
+- [ ] 任务15：整理项目文档与演示材料
+  - 编写README
+  - 绘制架构图
+  - 准备演示截图/录屏
+
+---
+
+## 建议的项目结构
+
+```
+ResearchAgent/
+├── agents/              # 各Agent实现
+│   ├── __init__.py
+│   ├── base.py          # Agent基类
+│   ├── planner.py       # Planner Agent
+│   ├── searcher.py      # Searcher Agent
+│   ├── reader.py        # Reader Agent
+│   ├── analyst.py       # Analyst Agent
+│   └── writer.py        # Writer Agent
+├── workflow/            # LangGraph工作流
+│   ├── __init__.py
+│   └── graph.py         # 流程图定义
+├── tools/               # 工具函数
+│   ├── __init__.py
+│   ├── arxiv_search.py  # arXiv搜索
+│   └── pdf_parser.py    # PDF解析
+├── web/                 # Web界面
+│   ├── __init__.py
+│   └── app.py           # Gradio应用
+├── config/              # 配置文件
+│   └── settings.py
+├── prompts/             # Prompt模板
+│   ├── planner.txt
+│   ├── reader.txt
+│   ├── analyst.txt
+│   └── writer.txt
+├── utils/               # 工具模块
+├── tests/               # 测试用例
+├── main.py              # 入口文件
+└── requirements.txt     # 依赖列表
+```
+
+---
+
+## 执行计划时间表
+
+| 时间 | 任务 |
+|------|------|
+| Day 1~2 | 任务1、2：搭框架，跑通单个Agent的工具调用 |
+| Day 3~4 | 任务3-9：实现多Agent之间的消息传递和状态共享 |
+| Day 5~7 | 任务12：调试完整流程，保证端到端能跑通 |
+| Day 8~9 | 任务10：做Gradio界面，让demo可以展示 |
+| Day 10~11 | 任务11：优化prompt，提升报告质量 |
+| Day 12~14 | 任务13-15：跑几个case，截图/录屏，整理成项目文档 |
+
+---
+
+## Demo效果预期
+
+用户输入：「帮我调研 LLM reasoning 最新进展」
+
+流程：
+1. Planner 拆解为3个子任务
+2. Searcher 检索到10篇相关论文
+3. Reader 并行总结每篇论文
+4. Analyst 对比各方法的优劣
+5. Writer 输出一份结构化综述报告
+
+---
+
+## 面试亮点
+
+- 有完整的系统设计（多Agent分工，有架构图可画）
+- 有可展示的demo，不只是跑代码
+- 可以量化：对比单Agent vs 多Agent的报告质量
