@@ -9,6 +9,7 @@ from agents.base import BaseAgent
 from utils.llm import create_llm
 from utils.state import add_message
 from utils.logger import logger
+from utils.docx_exporter import markdown_to_docx
 
 
 class WriterAgent(BaseAgent):
@@ -231,6 +232,7 @@ class WriterAgent(BaseAgent):
 
         lines.append("---\n")
         lines.append("请根据以上信息生成一份结构化的综述报告。")
+        lines.append("重要：必须从第1节「摘要」开始，按顺序完整生成全部7个章节（摘要→引言→文献检索与方法→主要研究发现→讨论→结论与建议→参考文献），不得跳过任何章节。")
 
         return "\n".join(lines)
 
@@ -271,7 +273,7 @@ class WriterAgent(BaseAgent):
         filename: Optional[str] = None,
         output_dir: str = "./reports"
     ) -> str:
-        """保存报告到文件
+        """保存报告到 Word 文件
 
         Args:
             report: 报告内容
@@ -289,13 +291,10 @@ class WriterAgent(BaseAgent):
         # 生成文件名
         if filename is None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"research_report_{timestamp}.md"
+            filename = f"research_report_{timestamp}.docx"
 
         filepath = os.path.join(output_dir, filename)
-
-        # 保存文件
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(report)
+        markdown_to_docx(report, filepath)
 
         logger.info(f"报告已保存到: {filepath}")
         return filepath

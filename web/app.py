@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from workflow import ResearchWorkflow
 from utils.state import StateValidator, get_state_summary
 from utils.logger import logger
+from utils.docx_exporter import markdown_to_docx
 
 
 class ResearchApp:
@@ -407,11 +408,10 @@ class ResearchApp:
             manager = StateManager()
 
             # 使用统一的时间戳生成报告文件名
-            filename = f"research_report_{self.timestamp}.md"
+            filename = f"research_report_{self.timestamp}.docx"
             filepath = manager.storage_dir / filename
-            
-            with open(filepath, "w", encoding="utf-8") as f:
-                f.write(report)
+
+            markdown_to_docx(report, str(filepath))
 
             return f"✅ 报告已保存: {filename}", str(filepath)
         except Exception as e:
@@ -710,7 +710,7 @@ def create_ui() -> gr.Blocks:
 
 def launch_app(
     share: bool = False,
-    server_name: str = "0.0.0.0",
+    server_name: str = "127.0.0.1",
     server_port: int = 7860,
 ):
     """启动Gradio应用
@@ -741,7 +741,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--host",
         type=str,
-        default="0.0.0.0",
+        default="127.0.0.1",
         help="服务器地址",
     )
     parser.add_argument(
