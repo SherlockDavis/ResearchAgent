@@ -149,6 +149,3 @@ ResearchAgent/
 
 ---
 
-## 📄 License
-
-MIT License
